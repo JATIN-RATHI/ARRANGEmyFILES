@@ -1,0 +1,48 @@
+def sort_the_item(type, files):
+    return [file for file in files if os.path.splitext(file)[1].lower() in type]
+
+def create_folder(name):
+    if not os.path.exists(name):
+        os.makedirs(name)
+    print("Creating Folder...")
+
+def move_file(name, files):
+
+    for file in files:
+        os.replace(file, f"{name}/{file}")
+
+    print("Moving file.....")
+if __name__ == '__main__':
+    import os
+    files = os.listdir()
+
+    # to remove this python file when processing 
+    files.remove("manager.py")
+    # making list of extension to sort in the manner
+    img = [".png", ".jpg", ".jpeg", ".tiff", ".bmp"]
+    audio = [".mp3"]
+    docs = [".txt", ".rtf", ".docx", ".doc", ".pdf", ".ppt", ".pptx", ".odt", ".xls", ".xlsx"]
+
+    others = []
+    # storing the particular ext items in their respective list
+
+    images = sort_the_item(img, files)
+    media = sort_the_item(audio, files)
+    documents = sort_the_item(docs, files)
+
+    for file in files:
+        ext = os.path.splitext(file)[1].lower()
+        if (ext not in img) and (ext not in audio) and (ext not in docs) and os.path.isfile(file) :
+            others.append(file)
+
+    # making particular folders to store particular ext
+    create_folder("images")
+    create_folder("media")
+    create_folder("documents")
+    create_folder("others")
+
+    # storing the respective items in their folders
+    move_file("images", images)
+    move_file("media", media)
+    move_file("documents", documents)
+    move_file("others", others)
